@@ -64,7 +64,6 @@ fun CountryListScreen(
                         fontWeight = FontWeight.Bold
                     )
 
-                    // Filter dropdown moved to the top bar
                     FilterDropdown(
                         regions = uiState.regions,
                         selectedRegion = uiState.selectedRegion,
