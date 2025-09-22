@@ -6,14 +6,12 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.ArrowDropDown
+import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.DropdownMenu
 import androidx.compose.material3.DropdownMenuItem
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.OutlinedButton
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
@@ -38,11 +36,18 @@ fun FilterDropdown(
     var expanded by remember { mutableStateOf(false) }
 
     Box(modifier = modifier) {
-        OutlinedButton(
+        Button(
             onClick = { expanded = true },
             shape = RoundedCornerShape(12.dp),
-            colors = ButtonDefaults.outlinedButtonColors(
+            colors = ButtonDefaults.buttonColors(
+                containerColor = Color.Transparent,
                 contentColor = MaterialTheme.colorScheme.primary
+            ),
+            elevation = ButtonDefaults.buttonElevation(
+                defaultElevation = 0.dp,
+                pressedElevation = 0.dp,
+                hoveredElevation = 0.dp,
+                focusedElevation = 0.dp
             ),
             modifier = Modifier.padding(horizontal = 16.dp)
         ) {
@@ -51,16 +56,15 @@ fun FilterDropdown(
                 contentDescription = "Filter",
                 modifier = Modifier.size(20.dp)
             )
-            Spacer(modifier = Modifier.width(8.dp))
-            Text(
-                text = selectedRegion,
-                fontSize = 14.sp,
-                fontWeight = FontWeight.Medium
-            )
-            Icon(
-                imageVector = Icons.Default.ArrowDropDown,
-                contentDescription = "Dropdown"
-            )
+
+            if (selectedRegion != "All") {
+                Spacer(modifier = Modifier.width(8.dp))
+                Text(
+                    text = selectedRegion,
+                    fontSize = 14.sp,
+                    fontWeight = FontWeight.Medium
+                )
+            }
         }
 
         DropdownMenu(

@@ -38,7 +38,6 @@ import com.example.countires.presentation.components.CountrySearchBar
 import com.example.countires.presentation.components.FilterDropdown
 import com.example.countires.presentation.viewmodel.CountryViewModel
 
-
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun CountryListScreen(
@@ -55,12 +54,21 @@ fun CountryListScreen(
         TopAppBar(
             title = {
                 Row(
+                    modifier = Modifier.fillMaxWidth(),
+                    horizontalArrangement = Arrangement.SpaceBetween,
                     verticalAlignment = Alignment.CenterVertically
                 ) {
                     Text(
                         text = "🌍 CountryExplorer",
                         fontSize = 20.sp,
                         fontWeight = FontWeight.Bold
+                    )
+
+                    // Filter dropdown moved to the top bar
+                    FilterDropdown(
+                        regions = uiState.regions,
+                        selectedRegion = uiState.selectedRegion,
+                        onRegionSelected = viewModel::updateSelectedRegion
                     )
                 }
             },
@@ -74,20 +82,6 @@ fun CountryListScreen(
             onSearchQueryChange = viewModel::updateSearchQuery,
             placeholder = if (uiState.searchQuery.isEmpty()) "Search countries" else "Search by country name or region..."
         )
-
-        Row(
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(bottom = 8.dp),
-            horizontalArrangement = Arrangement.SpaceBetween,
-            verticalAlignment = Alignment.CenterVertically
-        ) {
-            FilterDropdown(
-                regions = uiState.regions,
-                selectedRegion = uiState.selectedRegion,
-                onRegionSelected = viewModel::updateSelectedRegion
-            )
-        }
 
         Box(modifier = Modifier.fillMaxSize()) {
             when {
