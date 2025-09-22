@@ -1,6 +1,5 @@
 package com.example.countires.presentation.screens
 
-
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -14,8 +13,6 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowBack
-import androidx.compose.material3.Card
-import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
@@ -32,12 +29,15 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.res.dimensionResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import coil.compose.AsyncImage
+import com.example.countires.R
 import com.example.countires.presentation.viewmodel.CountryViewModel
+
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun CountryDetailScreen(
@@ -54,10 +54,13 @@ fun CountryDetailScreen(
             .background(Color(0xFFF8F9FA))
     ) {
         TopAppBar(
-            title = { Text("Country Details") },
+            title = { Text(stringResource(R.string.country_details_title)) },
             navigationIcon = {
                 IconButton(onClick = onBackClick) {
-                    Icon(Icons.Default.ArrowBack, contentDescription = "Back")
+                    Icon(
+                        Icons.Default.ArrowBack,
+                        contentDescription = stringResource(R.string.back_button_desc)
+                    )
                 }
             },
             colors = TopAppBarDefaults.topAppBarColors(
@@ -75,8 +78,8 @@ fun CountryDetailScreen(
                         horizontalAlignment = Alignment.CenterHorizontally
                     ) {
                         CircularProgressIndicator()
-                        Spacer(modifier = Modifier.height(16.dp))
-                        Text("Loading...")
+                        Spacer(modifier = Modifier.height(dimensionResource(R.dimen.spacing_large)))
+                        Text(stringResource(R.string.loading))
                     }
                 }
             }
@@ -85,61 +88,70 @@ fun CountryDetailScreen(
                     modifier = Modifier
                         .fillMaxSize()
                         .verticalScroll(rememberScrollState())
-                        .padding(16.dp)
+                        .padding(dimensionResource(R.dimen.padding_medium))
                 ) {
                     AsyncImage(
                         model = country.flags.png,
-                        contentDescription = "Flag of ${country.name.common}",
+                        contentDescription = stringResource(R.string.flag_of, country.name.common),
                         contentScale = ContentScale.FillWidth,
                         modifier = Modifier
                             .fillMaxWidth()
-                            .height(200.dp)
-                            .clip(RoundedCornerShape(12.dp))
+                            .height(dimensionResource(R.dimen.flag_size_large))
+                            .clip(RoundedCornerShape(dimensionResource(R.dimen.corner_radius_small)))
                             .background(Color.LightGray)
                     )
 
-                    Spacer(modifier = Modifier.height(24.dp))
+                    Spacer(modifier = Modifier.height(dimensionResource(R.dimen.spacing_xl)))
 
                     Text(
                         text = country.name.common,
-                        fontSize = 28.sp,
+                        fontSize = dimensionResource(R.dimen.text_size_xxl).value.sp,
                         fontWeight = FontWeight.Bold,
                         color = Color.Black
                     )
 
-                    Spacer(modifier = Modifier.height(8.dp))
+                    Spacer(modifier = Modifier.height(dimensionResource(R.dimen.spacing_medium)))
 
                     Text(
                         text = country.name.official,
-                        fontSize = 16.sp,
+                        fontSize = dimensionResource(R.dimen.text_size_medium).value.sp,
                         color = Color.Gray,
                         fontWeight = FontWeight.Medium
                     )
 
-                    Spacer(modifier = Modifier.height(24.dp))
+                    Spacer(modifier = Modifier.height(dimensionResource(R.dimen.spacing_xl)))
 
                     DetailRow(
-                        title = "Capital City",
-                        value = country.capital?.joinToString(", ") ?: "N/A"
+                        title = stringResource(R.string.capital_city),
+                        value = country.capital?.joinToString(", ")
+                            ?: stringResource(R.string.not_available)
                     )
 
                     DetailRow(
-                        title = "Official Languages",
-                        value = country.languages?.values?.joinToString(", ") ?: "N/A"
+                        title = stringResource(R.string.official_languages),
+                        value = country.languages?.values?.joinToString(", ")
+                            ?: stringResource(R.string.not_available)
+                    )
+
+                    // Fixed the currency formatting issue
+                    val currencyFormat = stringResource(R.string.currency_format)
+                    DetailRow(
+                        title = stringResource(R.string.currencies),
+                        value = country.currencies?.entries?.joinToString(", ") { entry ->
+                            // Use String.format instead of stringResource inside lambda
+                            currencyFormat.format(
+                                entry.value.name,
+                                entry.value.symbol ?: ""
+                            )
+                        } ?: stringResource(R.string.not_available)
                     )
 
                     DetailRow(
-                        title = "Currencies",
-                        value = country.currencies?.entries?.joinToString(", ") { "${it.value.name} (${it.value.symbol ?: ""})" }
-                            ?: "N/A"
-                    )
-
-                    DetailRow(
-                        title = "Timezones",
+                        title = stringResource(R.string.timezones),
                         value = country.timezones.joinToString(", ")
                     )
 
-                    Spacer(modifier = Modifier.height(24.dp))
+                    Spacer(modifier = Modifier.height(dimensionResource(R.dimen.spacing_xl)))
                 }
             }
             else -> {
@@ -147,7 +159,7 @@ fun CountryDetailScreen(
                     modifier = Modifier.fillMaxSize(),
                     contentAlignment = Alignment.Center
                 ) {
-                    Text("Country not found")
+                    Text(stringResource(R.string.country_not_found))
                 }
             }
         }
@@ -162,18 +174,18 @@ private fun DetailRow(
     Column(
         modifier = Modifier
             .fillMaxWidth()
-            .padding(vertical = 8.dp)
+            .padding(vertical = dimensionResource(R.dimen.spacing_medium))
     ) {
         Text(
             text = title,
-            fontSize = 14.sp,
+            fontSize = dimensionResource(R.dimen.text_size_small).value.sp,
             fontWeight = FontWeight.Bold,
             color = MaterialTheme.colorScheme.primary
         )
-        Spacer(modifier = Modifier.height(4.dp))
+        Spacer(modifier = Modifier.height(dimensionResource(R.dimen.spacing_small)))
         Text(
             text = value,
-            fontSize = 16.sp,
+            fontSize = dimensionResource(R.dimen.text_size_medium).value.sp,
             color = Color.Black
         )
     }

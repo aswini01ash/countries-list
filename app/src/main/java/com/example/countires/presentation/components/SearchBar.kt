@@ -15,14 +15,16 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.unit.dp
+import androidx.compose.ui.res.dimensionResource
+import androidx.compose.ui.res.stringResource
+import com.example.countires.R
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun CountrySearchBar(
     searchQuery: String,
     onSearchQueryChange: (String) -> Unit,
-    placeholder: String = "Search countries",
+    placeholder: String = stringResource(R.string.search_countries),
     @SuppressLint("ModifierParameter") modifier: Modifier = Modifier
 ) {
     OutlinedTextField(
@@ -37,18 +39,21 @@ fun CountrySearchBar(
         leadingIcon = {
             Icon(
                 imageVector = Icons.Default.Search,
-                contentDescription = "Search",
+                contentDescription = stringResource(R.string.search_desc),
                 tint = Color.Gray
             )
         },
         singleLine = true,
-        shape = RoundedCornerShape(12.dp),
+        shape = RoundedCornerShape(dimensionResource(R.dimen.corner_radius_small)),
         colors = OutlinedTextFieldDefaults.colors(
             focusedBorderColor = MaterialTheme.colorScheme.primary,
             unfocusedBorderColor = Color.LightGray
         ),
         modifier = modifier
             .fillMaxWidth()
-            .padding(horizontal = 16.dp, vertical = 8.dp)
+            .padding(
+                horizontal = dimensionResource(R.dimen.padding_medium),
+                vertical = dimensionResource(R.dimen.spacing_medium)
+            )
     )
 }

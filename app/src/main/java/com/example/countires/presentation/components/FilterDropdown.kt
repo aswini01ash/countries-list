@@ -20,9 +20,10 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.res.dimensionResource
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.countires.R
 
@@ -38,30 +39,30 @@ fun FilterDropdown(
     Box(modifier = modifier) {
         Button(
             onClick = { expanded = true },
-            shape = RoundedCornerShape(12.dp),
+            shape = RoundedCornerShape(dimensionResource(R.dimen.corner_radius_small)),
             colors = ButtonDefaults.buttonColors(
                 containerColor = Color.Transparent,
                 contentColor = MaterialTheme.colorScheme.primary
             ),
             elevation = ButtonDefaults.buttonElevation(
-                defaultElevation = 0.dp,
-                pressedElevation = 0.dp,
-                hoveredElevation = 0.dp,
-                focusedElevation = 0.dp
+                defaultElevation = dimensionResource(R.dimen.elevation_none),
+                pressedElevation = dimensionResource(R.dimen.elevation_none),
+                hoveredElevation = dimensionResource(R.dimen.elevation_none),
+                focusedElevation = dimensionResource(R.dimen.elevation_none)
             ),
-            modifier = Modifier.padding(horizontal = 16.dp)
+            modifier = Modifier.padding(horizontal = dimensionResource(R.dimen.padding_medium))
         ) {
             Icon(
                 painter = painterResource(id = R.drawable.ic_tune),
-                contentDescription = "Filter",
-                modifier = Modifier.size(20.dp)
+                contentDescription = stringResource(R.string.filter_desc),
+                modifier = Modifier.size(dimensionResource(R.dimen.icon_size_small))
             )
 
-            if (selectedRegion != "All") {
-                Spacer(modifier = Modifier.width(8.dp))
+            if (selectedRegion != stringResource(R.string.all_regions)) {
+                Spacer(modifier = Modifier.width(dimensionResource(R.dimen.spacing_medium)))
                 Text(
                     text = selectedRegion,
-                    fontSize = 14.sp,
+                    fontSize = dimensionResource(R.dimen.text_size_small).value.sp,
                     fontWeight = FontWeight.Medium
                 )
             }
@@ -76,7 +77,7 @@ fun FilterDropdown(
                     text = {
                         Text(
                             text = region,
-                            fontSize = 14.sp,
+                            fontSize = dimensionResource(R.dimen.text_size_small).value.sp,
                             color = if (region == selectedRegion) {
                                 MaterialTheme.colorScheme.primary
                             } else {

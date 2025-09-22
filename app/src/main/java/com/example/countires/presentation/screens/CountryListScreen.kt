@@ -1,5 +1,4 @@
 package com.example.countires.presentation.screens
-
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -28,11 +27,13 @@ import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.res.dimensionResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
-import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
+import com.example.countires.R
 import com.example.countires.presentation.components.CountryCard
 import com.example.countires.presentation.components.CountrySearchBar
 import com.example.countires.presentation.components.FilterDropdown
@@ -59,8 +60,8 @@ fun CountryListScreen(
                     verticalAlignment = Alignment.CenterVertically
                 ) {
                     Text(
-                        text = "🌍 CountryExplorer",
-                        fontSize = 20.sp,
+                        text = stringResource(R.string.country_explorer_title),
+                        fontSize = dimensionResource(R.dimen.text_size_xl).value.sp,
                         fontWeight = FontWeight.Bold
                     )
 
@@ -79,7 +80,11 @@ fun CountryListScreen(
         CountrySearchBar(
             searchQuery = uiState.searchQuery,
             onSearchQueryChange = viewModel::updateSearchQuery,
-            placeholder = if (uiState.searchQuery.isEmpty()) "Search countries" else "Search by country name or region..."
+            placeholder = if (uiState.searchQuery.isEmpty()) {
+                stringResource(R.string.search_countries)
+            } else {
+                stringResource(R.string.search_by_country_region)
+            }
         )
 
         Box(modifier = Modifier.fillMaxSize()) {
@@ -93,8 +98,8 @@ fun CountryListScreen(
                             horizontalAlignment = Alignment.CenterHorizontally
                         ) {
                             CircularProgressIndicator()
-                            Spacer(modifier = Modifier.height(16.dp))
-                            Text("Loading countries...")
+                            Spacer(modifier = Modifier.height(dimensionResource(R.dimen.spacing_large)))
+                            Text(stringResource(R.string.loading_countries))
                         }
                     }
                 }
@@ -106,21 +111,21 @@ fun CountryListScreen(
                     ) {
                         Column(
                             horizontalAlignment = Alignment.CenterHorizontally,
-                            modifier = Modifier.padding(32.dp)
+                            modifier = Modifier.padding(dimensionResource(R.dimen.spacing_xxl))
                         ) {
                             Text(
-                                text = "Oops! Something went wrong",
-                                fontSize = 18.sp,
+                                text = stringResource(R.string.error_something_wrong),
+                                fontSize = dimensionResource(R.dimen.text_size_large).value.sp,
                                 fontWeight = FontWeight.Bold,
                                 textAlign = TextAlign.Center
                             )
-                            Spacer(modifier = Modifier.height(8.dp))
+                            Spacer(modifier = Modifier.height(dimensionResource(R.dimen.spacing_medium)))
                             Text(
-                                text = uiState.error ?: "Unknown error",
+                                text = uiState.error ?: stringResource(R.string.error_unknown),
                                 textAlign = TextAlign.Center,
                                 color = Color.Gray
                             )
-                            Spacer(modifier = Modifier.height(16.dp))
+                            Spacer(modifier = Modifier.height(dimensionResource(R.dimen.spacing_large)))
                             Button(
                                 onClick = {
                                     viewModel.clearError()
@@ -128,8 +133,8 @@ fun CountryListScreen(
                                 }
                             ) {
                                 Icon(Icons.Default.Refresh, contentDescription = null)
-                                Spacer(modifier = Modifier.width(8.dp))
-                                Text("Retry")
+                                Spacer(modifier = Modifier.width(dimensionResource(R.dimen.spacing_medium)))
+                                Text(stringResource(R.string.retry))
                             }
                         }
                     }
@@ -142,15 +147,15 @@ fun CountryListScreen(
                     ) {
                         Column(
                             horizontalAlignment = Alignment.CenterHorizontally,
-                            modifier = Modifier.padding(32.dp)
+                            modifier = Modifier.padding(dimensionResource(R.dimen.spacing_xxl))
                         ) {
                             Text(
-                                text = "No countries found",
-                                fontSize = 18.sp,
+                                text = stringResource(R.string.no_countries_found),
+                                fontSize = dimensionResource(R.dimen.text_size_large).value.sp,
                                 fontWeight = FontWeight.Bold
                             )
                             Text(
-                                text = "Try adjusting your search or filter",
+                                text = stringResource(R.string.try_adjusting_search),
                                 color = Color.Gray,
                                 textAlign = TextAlign.Center
                             )
@@ -171,7 +176,7 @@ fun CountryListScreen(
                         }
 
                         item {
-                            Spacer(modifier = Modifier.height(16.dp))
+                            Spacer(modifier = Modifier.height(dimensionResource(R.dimen.spacing_large)))
                         }
                     }
                 }

@@ -20,11 +20,13 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.res.dimensionResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
-import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import coil.compose.AsyncImage
+import com.example.countires.R
 import com.example.countires.data.model.Country
 import java.text.NumberFormat
 import java.util.Locale
@@ -38,40 +40,43 @@ fun CountryCard(
     Card(
         modifier = modifier
             .fillMaxWidth()
-            .padding(horizontal = 16.dp, vertical = 6.dp)
+            .padding(
+                horizontal = dimensionResource(R.dimen.padding_medium),
+                vertical = dimensionResource(R.dimen.padding_small)
+            )
             .clickable { onClick() },
-        shape = RoundedCornerShape(12.dp),
+        shape = RoundedCornerShape(dimensionResource(R.dimen.corner_radius_small)),
         colors = CardDefaults.cardColors(
             containerColor = Color.White
         ),
         elevation = CardDefaults.cardElevation(
-            defaultElevation = 2.dp
+            defaultElevation = dimensionResource(R.dimen.elevation_small)
         )
     ) {
         Row(
             modifier = Modifier
-                .padding(16.dp)
+                .padding(dimensionResource(R.dimen.padding_medium))
                 .fillMaxWidth(),
             verticalAlignment = Alignment.CenterVertically
         ) {
             AsyncImage(
                 model = country.flags.png,
-                contentDescription = "Flag of ${country.name.common}",
+                contentDescription = stringResource(R.string.flag_of, country.name.common),
                 contentScale = ContentScale.Crop,
                 modifier = Modifier
-                    .size(48.dp)
+                    .size(dimensionResource(R.dimen.flag_size_small))
                     .clip(CircleShape)
                     .background(Color.LightGray)
             )
 
-            Spacer(modifier = Modifier.width(16.dp))
+            Spacer(modifier = Modifier.width(dimensionResource(R.dimen.spacing_large)))
 
             Column(
                 modifier = Modifier.weight(1f)
             ) {
                 Text(
                     text = country.name.common,
-                    fontSize = 18.sp,
+                    fontSize = dimensionResource(R.dimen.text_size_large).value.sp,
                     fontWeight = FontWeight.Bold,
                     color = Color.Black,
                     maxLines = 1,
@@ -79,19 +84,20 @@ fun CountryCard(
                 )
 
                 Text(
-                    text = "Region: ${country.region}",
-                    fontSize = 14.sp,
+                    text = stringResource(R.string.region_label, country.region),
+                    fontSize = dimensionResource(R.dimen.text_size_small).value.sp,
                     color = Color.Gray,
-                    modifier = Modifier.padding(top = 2.dp)
+                    modifier = Modifier.padding(top = dimensionResource(R.dimen.spacing_xs))
                 )
 
                 Text(
-                    text = "Population: ${
+                    text = stringResource(
+                        R.string.population_label,
                         NumberFormat.getNumberInstance(Locale.US).format(country.population)
-                    }",
-                    fontSize = 14.sp,
+                    ),
+                    fontSize = dimensionResource(R.dimen.text_size_small).value.sp,
                     color = Color.Gray,
-                    modifier = Modifier.padding(top = 2.dp)
+                    modifier = Modifier.padding(top = dimensionResource(R.dimen.spacing_xs))
                 )
             }
         }

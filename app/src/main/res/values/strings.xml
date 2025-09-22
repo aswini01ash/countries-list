@@ -1,3 +1,49 @@
+<?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="app_name">Country Explorer</string>
+
+    <!-- Screen Titles -->
+    <string name="country_details_title">Country Details</string>
+    <string name="country_explorer_title">CountryExplorer</string>
+
+    <!-- Navigation -->
+    <string name="back_button_desc">Back</string>
+
+    <!-- Loading States -->
+    <string name="loading">Loading…</string>
+    <string name="loading_countries">Loading countries…</string>
+
+    <!-- Error States -->
+    <string name="error_something_wrong">Oops! Something went wrong</string>
+    <string name="error_unknown">Unknown error</string>
+    <string name="retry">Retry</string>
+
+    <!-- Empty States -->
+    <string name="country_not_found">Country not found</string>
+    <string name="no_countries_found">No countries found</string>
+    <string name="try_adjusting_search">Try adjusting your search or filter</string>
+
+    <!-- Search -->
+    <string name="search_countries">Search countries</string>
+    <string name="search_by_country_region">Search by country name or region…</string>
+    <string name="search_desc">Search</string>
+
+    <!-- Filter -->
+    <string name="filter_desc">Filter</string>
+    <string name="all_regions">All</string>
+
+    <!-- Country Details -->
+    <string name="flag_of">Flag of %1$s</string>
+    <string name="capital_city">Capital City</string>
+    <string name="official_languages">Official Languages</string>
+    <string name="currencies">Currencies</string>
+    <string name="timezones">Timezones</string>
+    <string name="not_available">N/A</string>
+
+    <!-- Country Card -->
+    <string name="region_label">Region: %1$s</string>
+    <string name="population_label">Population: %1$s</string>
+
+    <!-- Currency Format -->
+    <string name="currency_format">%1$s (%2$s)</string>
 </resources>
