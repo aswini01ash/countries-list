@@ -16,6 +16,7 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
+import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
@@ -37,7 +38,6 @@ import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import coil.compose.AsyncImage
 import com.example.countires.presentation.viewmodel.CountryViewModel
-
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun CountryDetailScreen(
@@ -65,105 +65,116 @@ fun CountryDetailScreen(
             )
         )
 
-        if (country != null) {
-            Column(
-                modifier = Modifier
-                    .fillMaxSize()
-                    .verticalScroll(rememberScrollState())
-                    .padding(16.dp)
-            ) {
-                AsyncImage(
-                    model = country.flags.png,
-                    contentDescription = "Flag of ${country.name.common}",
-                    contentScale = ContentScale.FillWidth,
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .height(200.dp)
-                        .clip(RoundedCornerShape(12.dp))
-                        .background(Color.LightGray)
-                )
-
-                Spacer(modifier = Modifier.height(24.dp))
-
-                Text(
-                    text = country.name.common,
-                    fontSize = 28.sp,
-                    fontWeight = FontWeight.Bold,
-                    color = Color.Black
-                )
-
-                Spacer(modifier = Modifier.height(8.dp))
-
-                Text(
-                    text = country.name.official,
-                    fontSize = 16.sp,
-                    color = Color.Gray,
-                    fontWeight = FontWeight.Medium
-                )
-
-                Spacer(modifier = Modifier.height(24.dp))
-
-                DetailCard(
-                    title = "Capital City",
-                    value = country.capital?.joinToString(", ") ?: "N/A"
-                )
-
-                DetailCard(
-                    title = "Official Languages",
-                    value = country.languages?.values?.joinToString(", ") ?: "N/A"
-                )
-
-                DetailCard(
-                    title = "Currencies",
-                    value = country.currencies?.entries?.joinToString(", ") { "${it.value.name} (${it.value.symbol ?: ""})" }
-                        ?: "N/A"
-                )
-
-                DetailCard(
-                    title = "Timezones",
-                    value = country.timezones.joinToString(", ")
-                )
-
-                Spacer(modifier = Modifier.height(24.dp))
+        when {
+            uiState.isLoading -> {
+                Box(
+                    modifier = Modifier.fillMaxSize(),
+                    contentAlignment = Alignment.Center
+                ) {
+                    Column(
+                        horizontalAlignment = Alignment.CenterHorizontally
+                    ) {
+                        CircularProgressIndicator()
+                        Spacer(modifier = Modifier.height(16.dp))
+                        Text("Loading...")
+                    }
+                }
             }
-        } else {
-            Box(
-                modifier = Modifier.fillMaxSize(),
-                contentAlignment = Alignment.Center
-            ) {
-                Text("Country not found")
+            country != null -> {
+                Column(
+                    modifier = Modifier
+                        .fillMaxSize()
+                        .verticalScroll(rememberScrollState())
+                        .padding(16.dp)
+                ) {
+                    AsyncImage(
+                        model = country.flags.png,
+                        contentDescription = "Flag of ${country.name.common}",
+                        contentScale = ContentScale.FillWidth,
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .height(200.dp)
+                            .clip(RoundedCornerShape(12.dp))
+                            .background(Color.LightGray)
+                    )
+
+                    Spacer(modifier = Modifier.height(24.dp))
+
+                    Text(
+                        text = country.name.common,
+                        fontSize = 28.sp,
+                        fontWeight = FontWeight.Bold,
+                        color = Color.Black
+                    )
+
+                    Spacer(modifier = Modifier.height(8.dp))
+
+                    Text(
+                        text = country.name.official,
+                        fontSize = 16.sp,
+                        color = Color.Gray,
+                        fontWeight = FontWeight.Medium
+                    )
+
+                    Spacer(modifier = Modifier.height(24.dp))
+
+                    DetailRow(
+                        title = "Capital City",
+                        value = country.capital?.joinToString(", ") ?: "N/A"
+                    )
+
+                    DetailRow(
+                        title = "Official Languages",
+                        value = country.languages?.values?.joinToString(", ") ?: "N/A"
+                    )
+
+                    DetailRow(
+                        title = "Currencies",
+                        value = country.currencies?.entries?.joinToString(", ") { "${it.value.name} (${it.value.symbol ?: ""})" }
+                            ?: "N/A"
+                    )
+
+                    DetailRow(
+                        title = "Timezones",
+                        value = country.timezones.joinToString(", ")
+                    )
+
+                    Spacer(modifier = Modifier.height(24.dp))
+                }
+            }
+            else -> {
+                Box(
+                    modifier = Modifier.fillMaxSize(),
+                    contentAlignment = Alignment.Center
+                ) {
+                    Text("Country not found")
+                }
             }
         }
     }
 }
 
 @Composable
-private fun DetailCard(
+private fun DetailRow(
     title: String,
     value: String
 ) {
-    Card(
+    Column(
         modifier = Modifier
             .fillMaxWidth()
-            .padding(vertical = 4.dp),
-        colors = CardDefaults.cardColors(containerColor = Color.White),
-        elevation = CardDefaults.cardElevation(defaultElevation = 2.dp)
+            .padding(vertical = 8.dp)
     ) {
-        Column(
-            modifier = Modifier.padding(16.dp)
-        ) {
-            Text(
-                text = title,
-                fontSize = 14.sp,
-                fontWeight = FontWeight.Bold,
-                color = MaterialTheme.colorScheme.primary
-            )
-            Spacer(modifier = Modifier.height(4.dp))
-            Text(
-                text = value,
-                fontSize = 16.sp,
-                color = Color.Black
-            )
-        }
+        Text(
+            text = title,
+            fontSize = 14.sp,
+            fontWeight = FontWeight.Bold,
+            color = MaterialTheme.colorScheme.primary
+        )
+        Spacer(modifier = Modifier.height(4.dp))
+        Text(
+            text = value,
+            fontSize = 16.sp,
+            color = Color.Black
+        )
     }
 }
